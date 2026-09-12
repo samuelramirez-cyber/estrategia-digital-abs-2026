@@ -588,9 +588,10 @@ function renderHouse(){
   const cols = PILLARS.map(p=>{
     const ac = accentVars(p.accent);
     return `
-    <div class="pillar-house flex-1 min-w-[90px] flex flex-col items-center gap-2" title="${p.subtitle}">
-      <div class="w-full rounded-t-md flex items-start justify-center pt-3" style="height:150px;background:linear-gradient(180deg, ${ac.c}33, ${ac.c}0d); border:1px solid ${ac.c}55; border-bottom:none;">
-        <i data-lucide="${p.icon}" class="w-6 h-6" style="color:${ac.c}"></i>
+    <div class="pillar-house flex-1 min-w-[90px] flex flex-col items-center gap-2" data-tip-toggle title="${p.subtitle}">
+      <div class="w-full rounded-t-md flex flex-col items-center justify-start pt-3 pb-3 gap-2" style="min-height:150px;background:linear-gradient(180deg, ${ac.c}33, ${ac.c}0d); border:1px solid ${ac.c}55; border-bottom:none;">
+        <i data-lucide="${p.icon}" class="w-6 h-6 shrink-0" style="color:${ac.c}"></i>
+        <p class="pillar-desc hidden text-[10px] leading-snug text-center px-2 text-[#E2E8F0]">${p.subtitle}</p>
       </div>
       <span class="text-[11px] text-center leading-tight text-[#CBD5E1] font-medium">${p.title}</span>
     </div>`;
@@ -620,7 +621,7 @@ function renderHouse(){
       </div>
     </div>
 
-    <p class="text-xs text-[#475569] mt-6">Pasa el cursor sobre cada pilar para ver su enfoque estratégico.</p>
+    <p class="text-xs text-[#475569] mt-6">Haz clic en cada pilar para ver su enfoque estratégico.</p>
   </div>`;
 }
 
@@ -702,6 +703,14 @@ document.addEventListener("click",(e)=>{
     item.classList.add("open");
     body.style.maxHeight = body.scrollHeight + "px";
   }
+});
+
+/* Casita: toggle pillar strategic summary on click */
+document.addEventListener("click",(e)=>{
+  const col = e.target.closest("[data-tip-toggle]");
+  if(!col) return;
+  const desc = col.querySelector(".pillar-desc");
+  desc.classList.toggle("hidden");
 });
 
 /* Basic swipe support (touch devices) */
