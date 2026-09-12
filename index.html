@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Estrategia Digital ABS 2026</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#060D1A;
+    --navy-900:#0A192F;
+    --card-navy:#0F2342;
+    --border-blue:#1E3A8A;
+    --abs-red:#C8102E;
+    --abs-cyan:#00D2FF;
+    --silver:#94A3B8;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;height:100%;
+    background:var(--navy-950);
+    color:#fff;
+    font-family:'Inter',system-ui,sans-serif;
+    overflow:hidden;
+  }
+  .font-display{font-family:'Oswald',system-ui,sans-serif;}
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--border-blue);border-radius:8px;}
+  ::selection{background:var(--abs-red);color:#fff;}
+
+  #bg-fx{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 1000px 600px at 15% -10%, rgba(0,210,255,.10), transparent 60%),
+      radial-gradient(ellipse 900px 700px at 110% 20%, rgba(200,16,46,.14), transparent 55%),
+      radial-gradient(ellipse 800px 800px at 50% 120%, rgba(0,210,255,.06), transparent 60%),
+      linear-gradient(var(--navy-950), var(--navy-950));
+  }
+  #bg-grid{
+    position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;
+    background-image:
+      linear-gradient(rgba(148,163,184,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148,163,184,.06) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(ellipse 90% 80% at 50% 40%, black, transparent 90%);
+  }
+
+  #topbar{
+    position:fixed;top:0;left:0;right:0;height:64px;z-index:40;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 clamp(16px,4vw,48px);
+    background:rgba(6,13,26,.72);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(30,58,138,.4);
+  }
+  #progress-track{
+    position:fixed;top:64px;left:0;right:0;height:3px;z-index:40;
+    background:rgba(148,163,184,.12);
+  }
+  #progress-fill{
+    height:100%;width:10%;
+    background:linear-gradient(90deg,var(--abs-red),var(--abs-cyan));
+    transition:width .5s cubic-bezier(.65,0,.35,1);
+  }
+
+  #stage{
+    position:absolute;top:67px;left:0;right:0;bottom:0;z-index:10;
+  }
+  .slide{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transform:translateX(24px) scale(.99);
+    transition:opacity .45s ease, transform .45s ease, visibility 0s linear .45s;
+    overflow-y:auto;overflow-x:hidden;
+    padding:clamp(20px,4vw,56px) clamp(20px,6vw,90px) 100px;
+  }
+  .slide.active{
+    opacity:1;visibility:visible;pointer-events:auto;
+    transform:translateX(0) scale(1);
+    transition:opacity .45s ease, transform .45s ease, visibility 0s linear 0s;
+  }
+  .slide.prev{transform:translateX(-24px) scale(.99);}
+
+  .nav-btn{
+    position:fixed;top:50%;transform:translateY(-50%);z-index:45;
+    width:48px;height:48px;border-radius:9999px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(15,35,66,.85);border:1px solid rgba(30,58,138,.6);
+    color:#fff;backdrop-filter:blur(6px);
+    transition:all .2s ease;cursor:pointer;
+  }
+  .nav-btn:hover:not(:disabled){background:var(--abs-red);border-color:var(--abs-red);transform:translateY(-50%) scale(1.08);}
+  .nav-btn:disabled{opacity:.25;cursor:not-allowed;}
+  #btn-prev{left:clamp(8px,2vw,28px);}
+  #btn-next{right:clamp(8px,2vw,28px);}
+
+  #dotbar{
+    position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:45;
+    display:flex;gap:8px;padding:8px 14px;border-radius:9999px;
+    background:rgba(15,35,66,.75);border:1px solid rgba(30,58,138,.5);backdrop-filter:blur(6px);
+  }
+  .dot{width:8px;height:8px;border-radius:9999px;background:rgba(148,163,184,.4);cursor:pointer;transition:all .25s ease;}
+  .dot:hover{background:var(--abs-cyan);}
+  .dot.active{width:22px;background:var(--abs-red);}
+
+  .glass-card{
+    background:var(--card-navy);background:rgba(15,35,66,.9);
+    border:1px solid rgba(30,58,138,.5);
+    border-radius:16px;
+  }
+  .acc-header{cursor:pointer;user-select:none;}
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.65,0,.35,1);}
+  .acc-chevron{transition:transform .3s ease;}
+  .acc-item.open .acc-chevron{transform:rotate(180deg);}
+  .acc-item.open .acc-header{border-bottom:1px solid rgba(30,58,138,.5);}
+
+  .tag-pill{
+    font-family:'Oswald',sans-serif;letter-spacing:.12em;font-size:11px;
+    padding:4px 12px;border-radius:9999px;font-weight:600;
+  }
+  .kicker{letter-spacing:.2em;font-size:12px;font-weight:600;color:var(--silver);}
+
+  .pillar-house{transition:transform .25s ease, filter .25s ease;cursor:pointer;}
+  .pillar-house:hover{transform:translateY(-6px);filter:brightness(1.15);}
+  .pillar-house{min-width:90px;}
+
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .float{animation:floaty 5s ease-in-out infinite;}
+
+  .grad-text{background:linear-gradient(90deg,#C8102E,#00D2FF);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .funnel-box{background:linear-gradient(135deg,#0F2342,#060D1A);}
+
+  @media (max-width:768px){
+    .nav-btn{width:38px;height:38px;}
+    #topbar{height:56px;}
+    #progress-track{top:56px;}
+    #stage{top:59px;}
+  }
+
+  /* ---------------------------------------------------------------
+     Fallback utility layer: mirrors the Tailwind classes used on this
+     page with identical values, so layout survives if the Tailwind
+     CDN can't be reached (offline / firewall) during the presentation.
+     Harmless no-op once the real Tailwind CDN loads (same values).
+  --------------------------------------------------------------- */
+  .flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.block{display:block}.hidden{display:none}
+  .flex-1{flex:1 1 0%}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}
+  .items-center{align-items:center}.items-start{align-items:flex-start}.items-stretch{align-items:stretch}
+  .justify-between{justify-content:space-between}.justify-center{justify-content:center}
+  .gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-8{gap:2rem}
+  .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .space-y-2>*+*{margin-top:.5rem}
+  .relative{position:relative}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}
+  .w-full{width:100%}.h-full{height:100%}.min-w-0{min-width:0}.mx-auto{margin-left:auto;margin-right:auto}
+  .shrink-0{flex-shrink:0}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .whitespace-nowrap{white-space:nowrap}.text-center{text-align:center}
+  .w-4{width:1rem}.h-4{height:1rem}.w-5{width:1.25rem}.h-5{height:1.25rem}.w-6{width:1.5rem}.h-6{height:1.5rem}
+  .w-7{width:1.75rem}.h-7{height:1.75rem}.w-9{width:2.25rem}.h-9{height:2.25rem}.w-11{width:2.75rem}.h-11{height:2.75rem}
+  .w-14{width:3.5rem}.h-14{height:3.5rem}.h-16{height:4rem}.w-20{width:5rem}.h-20{height:5rem}
+  .max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.max-w-5xl{max-width:64rem}.max-w-6xl{max-width:72rem}
+  .text-xs{font-size:.75rem;line-height:1rem}.text-sm{font-size:.875rem;line-height:1.25rem}
+  .text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}
+  .text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}
+  .text-6xl{font-size:3.75rem;line-height:1}
+  .text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}
+  .font-normal{font-weight:400}.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}
+  .leading-tight{line-height:1.25}.leading-relaxed{line-height:1.625}
+  .tracking-wide{letter-spacing:.025em}.tracking-wider{letter-spacing:.05em}.tracking-widest{letter-spacing:.1em}
+  .tracking-\[\.2em\]{letter-spacing:.2em}.tracking-\[\.25em\]{letter-spacing:.25em}
+  .rounded{border-radius:.25rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}
+  .rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}
+  .rounded-t-md{border-top-left-radius:.375rem;border-top-right-radius:.375rem}
+  .rounded-b-lg{border-bottom-left-radius:.5rem;border-bottom-right-radius:.5rem}
+  .border{border-width:1px;border-style:solid;border-color:rgba(148,163,184,.3)}
+  .shadow-2xl{box-shadow:0 25px 50px -12px rgba(0,0,0,.4)}
+  .mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}
+  .mb-5{margin-bottom:1.25rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mb-10{margin-bottom:2.5rem}.mb-12{margin-bottom:3rem}
+  .mt-0\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}
+  .pt-1{padding-top:.25rem}.pt-3{padding-top:.75rem}.pb-1{padding-bottom:.25rem}.pb-5{padding-bottom:1.25rem}
+  .px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}
+  .px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}
+  .py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}
+  .py-4{padding-top:1rem;padding-bottom:1rem}.py-5{padding-top:1.25rem;padding-bottom:1.25rem}
+  .p-6{padding:1.5rem}
+  @media (min-width:768px){
+    .md\:flex{display:flex}.md\:flex-row{flex-direction:row}
+    .md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .md\:gap-3{gap:.75rem}.md\:h-20{height:5rem}.md\:mt-6{margin-top:1.5rem}
+    .md\:text-4xl{font-size:2.25rem;line-height:2.5rem}.md\:text-6xl{font-size:3.75rem;line-height:1}
+    .md\:text-base{font-size:1rem;line-height:1.5rem}.md\:text-lg{font-size:1.125rem;line-height:1.75rem}
+    .md\:text-sm{font-size:.875rem;line-height:1.25rem}
+  }
+</style>
+</head>
+<body>
+
+<div id="bg-fx"></div>
+<div id="bg-grid"></div>
+
+<header id="topbar">
+  <div class="flex items-center gap-3">
+    <div class="w-9 h-9 rounded-md bg-[#C8102E] flex items-center justify-center font-display font-bold text-lg">A</div>
+    <div class="leading-tight">
+      <div class="font-display font-semibold text-sm tracking-wide">ABS GLOBAL <span class="text-[#94A3B8] font-normal">COLOMBIA</span></div>
+      <div class="text-[10px] tracking-[.2em] text-[#00D2FF] font-semibold">ESTRATEGIA DIGITAL 2026</div>
+    </div>
+  </div>
+  <div class="flex items-center gap-4">
+    <span id="slide-counter" class="font-display text-sm text-[#94A3B8] tracking-wider">SLIDE 01 <span class="text-white">DE 10</span></span>
+  </div>
+</header>
+
+<div id="progress-track"><div id="progress-fill"></div></div>
+
+<main id="stage"></main>
+
+<button id="btn-prev" class="nav-btn" aria-label="Anterior"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+<button id="btn-next" class="nav-btn" aria-label="Siguiente"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+<div id="dotbar"></div>
+
+<script>
+/* =========================================================
+   DATA — 6 Pilares Estratégicos ABS
+========================================================= */
+const PILLARS = [
+  {
+    tag:"PILAR 01 — LECHERÍA TA", title:"Holstein ABS", subtitle:"La vaca balanceada frente al mito de la «vaca linda»",
+    icon:"milk", accent:"cyan",
+    blocks:[
+      {letter:"A", label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
+        intro:"El mérito genético real combina fertilidad, producción, longevidad y salud de ubre y pezuñas — no solo el puntaje de conformación de exhibición.",
+        bullets:[
+          "Índices compuestos (mérito neto, TPI) ponderan producción de leche junto con días abiertos, intervalo entre partos y vida productiva.",
+          "Conformación de ubre (profundidad, ligamento suspensorio) y ángulo podal predicen longevidad y reducen descartes prematuros.",
+          "La selección exclusiva por «tipo de exhibición» muestra correlación débil con la rentabilidad real por lactancia."
+        ]},
+      {letter:"B", label:"Oportunidad Digital", icon:"target",
+        intro:"Gran parte del mercado lechero colombiano aún selecciona por apariencia en subastas y redes, dejando una brecha de criterio técnico sin ocupar.",
+        bullets:[
+          "Oportunidad de posicionar a ABS como la autoridad que traduce PTA/DEP en decisiones de rentabilidad de finca.",
+          "El contenido educativo cierra la brecha entre lo que el productor ve (fenotipo) y lo que paga (genotipo).",
+          "Diferenciación frente a competidores que aún comunican solo con lenguaje estético."
+        ]},
+      {letter:"C", label:"Formatos & Medios Adaptados", icon:"layout-grid",
+        intro:"Traducir datos genómicos densos en formatos de consumo rápido para perfiles técnicos y de campo.",
+        bullets:[
+          "Artículos técnicos en LinkedIn/Web sobre lectura de PTA, mérito neto y selección de reemplazos.",
+          "Infografías comparativas «vaca balanceada vs. vaca linda» con métricas de fertilidad y salud podal.",
+          "Fichas PDF de toro optimizadas para WhatsApp: una página, datos clave, QR a la ficha completa."
+        ]},
+      {letter:"D", label:"Estrategia Orgánica & Pauta", icon:"megaphone",
+        intro:"Cobertura orgánica técnica combinada con pauta hiper-segmentada por rol y región lechera.",
+        bullets:[
+          "Orgánica: casos de finca y validación de médicos veterinarios y zootecnistas aliados.",
+          "Pauta segmentada por cuencas lecheras (Sabana de Bogotá, Antioquia, Nariño) y por cargo.",
+          "Remarketing con fichas técnicas a usuarios que interactúan con contenido de selección genética."
+        ]},
+    ]
+  },
+  {
+    tag:"PILAR 02 — BIOTECNOLOGÍA REPRODUCTIVA", title:"Semen Sexado Sexcel®", subtitle:"90% de efectividad, cero fricción de manejo en campo",
+    icon:"test-tube-2", accent:"cyan",
+    blocks:[
+      {letter:"A", label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
+        intro:"Clasificación espermática asistida por láser que separa espermatozoides portadores de cromosoma X o Y con 90% de efectividad.",
+        bullets:[
+          "Permite decidir con alta probabilidad el sexo de la cría: hembras de reemplazo en lechería o el sexo de mayor valor en programas de carne.",
+          "El proceso ocurre en el laboratorio de procesamiento seminal; el productor recibe la dosis lista para inseminar.",
+          "Compatible con protocolos estándar de sincronización e IATF ya usados en finca."
+        ]},
+      {letter:"B", label:"Oportunidad Digital", icon:"target",
+        intro:"El principal freno a la adopción no es la ciencia sino un mito de manejo: se asume que requiere infraestructura de laboratorio en finca.",
+        bullets:[
+          "Oportunidad de derribar el mito: Sexcel® se aplica con pistola de inseminación convencional, sin equipos adicionales.",
+          "Educar sobre la curva de manejo real (descongelado, tiempos, manipulación de la pajilla) reduce la percepción de riesgo.",
+          "Categoría con alta intención de búsqueda pero baja claridad técnica — terreno fértil para contenido de autoridad."
+        ]},
+      {letter:"C", label:"Formatos & Medios Adaptados", icon:"layout-grid",
+        intro:"Contenido demostrativo y práctico dirigido al momento exacto de la decisión de compra y de aplicación.",
+        bullets:[
+          "Video corto de protocolo de manejo en campo: descongele, tiempo de inserción, control de calidad.",
+          "Infografía de tasa de concepción Sexcel® vs. semen convencional por categoría de hembra.",
+          "Ficha técnica PDF para técnicos inseminadores, formato WhatsApp, con pasos de manejo resumidos."
+        ]},
+      {letter:"D", label:"Estrategia Orgánica & Pauta", icon:"megaphone",
+        intro:"Autoridad técnica construida junto a los gremios y programas de inseminación artificial.",
+        bullets:[
+          "Orgánica en comunidades de técnicos IA y programas de transferencia de embriones.",
+          "Pauta dirigida a técnicos inseminadores, jefes de reproducción y encargados de mejoramiento.",
+          "Piezas de mito-vs-realidad como imán de interacción y guardado."
+        ]},
+    ]
+  },
+  {
+    tag:"PILAR 03 — GENÉTICA DE CARNE", title:"Nelore ABS", subtitle:"Velocidad a peso final y eficiencia en pradera",
+    icon:"gauge", accent:"red",
+    blocks:[
+      {letter:"A", label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
+        intro:"La rentabilidad en cría-levante-ceba depende de la velocidad a peso final y del costo de mantenimiento diario en pradera, no solo del fenotipo cebuino.",
+        bullets:[
+          "DEP de peso al destete, peso a los 18 meses y área de ojo de lomo predicen ciclos más cortos y más kilos vendidos por hectárea.",
+          "Animales de menor requerimiento de mantenimiento liberan carga animal y pradera para escalar el hato.",
+          "La genética de precocidad reduce la edad al primer servicio y acelera el retorno de capital."
+        ]},
+      {letter:"B", label:"Oportunidad Digital", icon:"target",
+        intro:"El mercado de cría tradicional aún decide por apariencia racial cebuina, subestimando el impacto de la genética en el ciclo completo.",
+        bullets:[
+          "Oportunidad de posicionar a Nelore ABS como decisión de rentabilidad por ciclo productivo, no solo de fenotipo.",
+          "El contenido que traduce DEP en pesos y kilos vendidos conecta directamente con la lógica del ganadero de carne.",
+          "Espacio para educar sobre eficiencia de conversión frente a competidores enfocados solo en tamaño de marco."
+        ]},
+      {letter:"C", label:"Formatos & Medios Adaptados", icon:"layout-grid",
+        intro:"Métricas del ciclo completo traducidas a piezas visuales de decisión rápida.",
+        bullets:[
+          "Infografías del ciclo cría-levante-ceba con métricas de eficiencia y costo por kilo producido.",
+          "Artículos técnicos LinkedIn sobre lectura de DEP aplicada a la decisión de compra de reproductores.",
+          "Comparativos visuales de velocidad a peso final por línea genética."
+        ]},
+      {letter:"D", label:"Estrategia Orgánica & Pauta", icon:"megaphone",
+        intro:"Presencia en el circuito ganadero de carne, con pauta orientada a cuencas de cría y ceba.",
+        bullets:[
+          "Orgánica en subastas, ferias y remates de las principales cuencas cebuinas.",
+          "Pauta segmentada por región (Llanos, Costa Caribe, Magdalena Medio) y por eslabón productivo.",
+          "Retargeting con calculadoras simples de rentabilidad por reproductor."
+        ]},
+    ]
+  },
+  {
+    tag:"PILAR 04 — GENÉTICA COMPUESTA", title:"Cruzamiento Industrial", subtitle:"Súper Dosis ABS y BIF/Beefocus — Estrategia Lazo Millonario",
+    icon:"git-branch", accent:"red",
+    blocks:[
+      {letter:"A", label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
+        intro:"Súper Dosis ABS combina cebuino blanco con líneas continentales de carne (negro carne) buscando heterosis máxima; BIF/Beefocus cruza líneas lecheras con carne capitalizando vientres de descarte lechero.",
+        bullets:[
+          "La heterosis del cruce industrial mejora vigor, ganancia de peso y fertilidad frente a razas puras en el mismo sistema.",
+          "BIF/Beefocus convierte un activo subutilizado —la vaca lechera de descarte— en un ternero de mayor valor comercial de carne.",
+          "«Lazo Millonario» concentra el despliegue inicial en los Llanos Orientales, cuenca de mayor potencial de escalamiento."
+        ]},
+      {letter:"B", label:"Oportunidad Digital", icon:"target",
+        intro:"El cruzamiento industrial compite por atención con actores ya posicionados en el mensaje de cruce (p. ej. NuEra), lo que exige diferenciación clara.",
+        bullets:[
+          "Oportunidad de distanciar el mensaje de ABS con evidencia propia de heterosis y datos de campo, no solo narrativa de marca.",
+          "Educar sobre BIF/Beefocus como categoría poco comunicada en Colombia abre espacio de autoridad temprana.",
+          "«Lazo Millonario» como historia de marca replicable en otras cuencas tras validarse en Llanos."
+        ]},
+      {letter:"C", label:"Formatos & Medios Adaptados", icon:"layout-grid",
+        intro:"Casos reales y herramientas simples de decisión para ganaderos que evalúan cruzar.",
+        bullets:[
+          "Casos de finca documentados de cruces Súper Dosis y BIF/Beefocus con resultados de ceba.",
+          "Infografías de heterosis explicando la ganancia genética del cruce frente a la raza pura.",
+          "Calculadora simple de rentabilidad por ternero cruzado, en formato compartible por WhatsApp."
+        ]},
+      {letter:"D", label:"Estrategia Orgánica & Pauta", icon:"megaphone",
+        intro:"Despliegue geográfico priorizado con pauta directa a los perfiles de decisión de fincas de doble negocio.",
+        bullets:[
+          "Orgánica concentrada en redes ganaderas de los Llanos Orientales, epicentro de «Lazo Millonario».",
+          "Pauta dirigida a administradores y propietarios de fincas con doble negocio leche-carne.",
+          "Mensajes de distanciamiento competitivo basados en evidencia, no en comparación directa de marca."
+        ]},
+    ]
+  },
+  {
+    tag:"PILAR 05 — DOBLE PROPÓSITO", title:"Girolando", subtitle:"Adaptación al estrés térmico en trópico bajo y medio",
+    icon:"thermometer-sun", accent:"cyan",
+    blocks:[
+      {letter:"A", label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
+        intro:"La adaptación real al trópico bajo y medio depende de la termotolerancia genética —pelo corto, pigmentación, disipación de calor— no solo de la mezcla racial.",
+        bullets:[
+          "La tolerancia al estrés calórico sostiene producción de leche y fertilidad en climas cálidos donde razas especializadas caen en rendimiento.",
+          "El doble propósito capitaliza tanto el litro de leche como el kilo de carne del mismo hato, mejorando el flujo de caja de la finca.",
+          "Los datos de comportamiento productivo bajo estrés térmico son el argumento técnico central en el Eje Cafetero y el Magdalena Medio."
+        ]},
+      {letter:"B", label:"Oportunidad Digital", icon:"target",
+        intro:"El doble propósito suele subvalorarse frente a la lechería especializada, aun siendo la opción más eficiente para el trópico real de Colombia.",
+        bullets:[
+          "Oportunidad de educar sobre eficiencia productiva bajo condiciones reales de calor y humedad, no de trópico alto.",
+          "Girolando ABS puede liderar la conversación técnica de adaptación climática en genética bovina.",
+          "Espacio de autoridad en una categoría con menor saturación de contenido técnico que la lechería especializada."
+        ]},
+      {letter:"C", label:"Formatos & Medios Adaptados", icon:"layout-grid",
+        intro:"Contenido que conecta el clima real de finca con el desempeño genético esperado.",
+        bullets:[
+          "Infografías de índice de tolerancia al calor por línea genética Girolando.",
+          "Artículos técnicos sobre manejo productivo en trópico bajo y medio.",
+          "Fichas PDF resumidas de toros Girolando, optimizadas para WhatsApp, con foco en doble propósito."
+        ]},
+      {letter:"D", label:"Estrategia Orgánica & Pauta", icon:"megaphone",
+        intro:"Foco geográfico en las cuencas de doble propósito con mayor potencial de adopción.",
+        bullets:[
+          "Orgánica regional en Eje Cafetero y Magdalena Medio, zonas núcleo de doble propósito.",
+          "Pauta dirigida a ganaderos de doble propósito y cooperativas lecheras regionales.",
+          "Contenido co-creado con técnicos regionales para reforzar cercanía y credibilidad local."
+        ]},
+    ]
+  },
+  {
+    tag:"PILAR 06 — INFRAESTRUCTURA GENÉTICA", title:"ABS | Río Grande", subtitle:"Habilitadores de producción — el primer laboratorio de embriones especializado en Colombia",
+    icon:"microscope", accent:"red",
+    blocks:[
+      {letter:"A", label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
+        intro:"Alianza biotecnológica que opera el primer laboratorio especializado de producción de embriones en Colombia, habilitando escalamiento genético en el país.",
+        bullets:[
+          "Capacidad local de aspiración folicular (OPU) y fertilización in vitro (FIV) reduce la dependencia histórica de embriones importados.",
+          "Acelera la multiplicación de genética de alto valor —Holstein, Sexcel, Nelore— directamente en el mercado colombiano.",
+          "Posiciona a ABS como habilitador de infraestructura, no solo como proveedor de dosis seminal."
+        ]},
+      {letter:"B", label:"Oportunidad Digital", icon:"target",
+        intro:"El mercado desconoce en gran medida que Colombia ya cuenta con capacidad local de producción de embriones de este nivel técnico.",
+        bullets:[
+          "Oportunidad de comunicar la reducción real de tiempos y costos frente a la importación de embriones.",
+          "Historia de infraestructura y soberanía genética como argumento diferencial de marca-país aliada.",
+          "Contenido dirigido a inversionistas y grandes hatos que evalúan programas de multiplicación genética."
+        ]},
+      {letter:"C", label:"Formatos & Medios Adaptados", icon:"layout-grid",
+        intro:"Contenido educativo sobre un proceso técnico poco conocido fuera del círculo especializado.",
+        bullets:[
+          "Explicativos del flujo OPU-FIV en infografía paso a paso.",
+          "Artículos técnicos para prensa especializada y asociaciones de raza.",
+          "Piezas institucionales sobre la alianza ABS | Río Grande y su rol en el ecosistema genético nacional."
+        ]},
+      {letter:"D", label:"Estrategia Orgánica & Pauta", icon:"megaphone",
+        intro:"Autoridad institucional dirigida a decisores de alto volumen y a la comunidad técnica especializada.",
+        bullets:[
+          "Orgánica con asociaciones de raza e influenciadores técnicos del sector.",
+          "Pauta dirigida a inversionistas ganaderos, grandes hatos y programas de mejoramiento genético.",
+          "Relación con medios especializados del sector agropecuario para cobertura editorial."
+        ]},
+    ]
+  },
+];
+
+/* =========================================================
+   RENDER HELPERS
+========================================================= */
+function accentVars(a){
+  return a==="cyan" ? {c:"#00D2FF", soft:"rgba(0,210,255,.12)"} : {c:"#C8102E", soft:"rgba(200,16,46,.14)"};
+}
+
+function renderPillarSlide(p, idx){
+  const ac = accentVars(p.accent);
+  const blocks = p.blocks.map((b,i)=>`
+    <div class="acc-item glass-card overflow-hidden" data-idx="${i}">
+      <div class="acc-header flex items-center justify-between gap-4 px-5 py-4">
+        <div class="flex items-center gap-3 min-w-0">
+          <span class="tag-pill shrink-0" style="background:${ac.soft};color:${ac.c};">${b.letter}</span>
+          <i data-lucide="${b.icon}" class="w-4 h-4 shrink-0" style="color:${ac.c};"></i>
+          <span class="font-semibold text-sm md:text-base truncate">${b.label}</span>
+        </div>
+        <i data-lucide="chevron-down" class="acc-chevron w-5 h-5 text-[#94A3B8] shrink-0"></i>
+      </div>
+      <div class="acc-body px-5">
+        <div class="pb-5 pt-1 text-sm text-[#CBD5E1] leading-relaxed">
+          <p class="mb-3">${b.intro}</p>
+          <ul class="space-y-2">
+            ${b.bullets.map(x=>`<li class="flex gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5 shrink-0" style="color:${ac.c};"></i><span>${x}</span></li>`).join("")}
+          </ul>
+        </div>
+      </div>
+    </div>`).join("");
+
+  return `
+  <div class="max-w-6xl mx-auto w-full">
+    <div class="flex items-center gap-3 mb-3">
+      <span class="tag-pill" style="background:${ac.soft};color:${ac.c};">${p.tag}</span>
+    </div>
+    <div class="flex items-start gap-4 mb-8">
+      <div class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0" style="background:${ac.soft};border:1px solid ${ac.c}55;">
+        <i data-lucide="${p.icon}" class="w-7 h-7" style="color:${ac.c};"></i>
+      </div>
+      <div>
+        <h2 class="font-display font-semibold text-3xl md:text-4xl">${p.title}</h2>
+        <p class="text-[#94A3B8] text-sm md:text-base mt-1">${p.subtitle}</p>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">${blocks}</div>
+  </div>`;
+}
+
+function renderCover(){
+  const chips = PILLARS.map(p=>{
+    const ac = accentVars(p.accent);
+    return `<div class="flex items-center gap-2 px-3 py-2 rounded-xl glass-card">
+      <i data-lucide="${p.icon}" class="w-4 h-4" style="color:${ac.c}"></i>
+      <span class="text-xs text-[#CBD5E1] whitespace-nowrap">${p.title}</span>
+    </div>`;
+  }).join("");
+  return `
+  <div class="max-w-5xl mx-auto w-full h-full flex flex-col items-center justify-center text-center gap-8">
+    <div class="float w-20 h-20 rounded-3xl bg-[#C8102E] flex items-center justify-center font-display font-bold text-4xl shadow-2xl shadow-[#C8102E]/30">A</div>
+    <div>
+      <p class="kicker text-[#00D2FF] mb-4">ABS GLOBAL COLOMBIA</p>
+      <h1 class="font-display font-bold text-4xl md:text-6xl leading-tight">
+        Estrategia Digital ABS 2026<br>
+        <span class="grad-text">Macro-Autoridad &amp; Liderazgo Genético</span>
+      </h1>
+      <p class="text-[#94A3B8] text-base md:text-lg mt-6 max-w-2xl mx-auto">
+        Despliegue progresivo de pilares hacia la consolidación de marca — de la biotecnología reproductiva al posicionamiento Nº1 en genética bovina mundial.
+      </p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-3 max-w-3xl">${chips}</div>
+    <p class="text-[10px] tracking-[.25em] text-[#475569] mt-4">USA LAS FLECHAS &larr; &rarr; O LOS BOTONES PARA NAVEGAR</p>
+  </div>`;
+}
+
+function renderAI(){
+  const items = [
+    {icon:"database", title:"Agentes RAG", text:"Ingesta y consulta de papers científicos y fichas técnicas ABS mediante agentes RAG, garantizando que cada pieza de contenido cite la fuente técnica correcta."},
+    {icon:"sparkles", title:"Generación Acelerada", text:"Borradores de contenido con cero alucinaciones técnicas y parámetros estandarizados: unidades, nomenclatura genética y terminología de marca."},
+    {icon:"gauge", title:"Optimización Operativa", text:"Reducción de tiempos operativos en la producción de contenido, liberando capacidad estratégica del equipo agencia-cliente."},
+  ];
+  const flow = ["Papers científicos & fichas ABS","Agente RAG","Borrador validado","Revisión humana","Publicación"];
+  return `
+  <div class="max-w-6xl mx-auto w-full">
+    <p class="kicker text-[#00D2FF] mb-2">MOTOR OPERATIVO AGENCIA-CLIENTE</p>
+    <h2 class="font-display font-semibold text-3xl md:text-4xl mb-3">Capa de Inteligencia Artificial</h2>
+    <p class="text-[#94A3B8] max-w-2xl mb-10">Cómo la IA se usa internamente para acelerar y estandarizar el flujo de trabajo entre ABS y la agencia, sin sacrificar rigor técnico.</p>
+
+    <div class="grid md:grid-cols-3 gap-5 mb-12">
+      ${items.map(it=>`
+      <div class="glass-card p-6">
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,210,255,.12);">
+          <i data-lucide="${it.icon}" class="w-5 h-5 text-[#00D2FF]"></i>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">${it.title}</h3>
+        <p class="text-sm text-[#CBD5E1] leading-relaxed">${it.text}</p>
+      </div>`).join("")}
+    </div>
+
+    <div class="glass-card p-6">
+      <p class="text-xs tracking-widest text-[#94A3B8] mb-5">FLUJO DE CONTENIDO VALIDADO</p>
+      <div class="flex flex-wrap items-center gap-3">
+        ${flow.map((f,i)=>`
+          <div class="px-4 py-3 rounded-xl border border-[#1E3A8A]/60 bg-[#060D1A]/60 text-sm font-medium text-center">${f}</div>
+          ${i<flow.length-1 ? '<i data-lucide="chevron-right" class="w-5 h-5 text-[#475569] shrink-0"></i>' : ''}
+        `).join("")}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderPauta(){
+  const audiences = [
+    {icon:"leaf", title:"Zootecnistas", text:"Contenido técnico de mérito genético y eficiencia productiva dirigido a quienes definen criterios de selección."},
+    {icon:"building-2", title:"Administradores de Finca", text:"Piezas de rentabilidad y flujo de caja que conectan la genética con la decisión de compra."},
+    {icon:"stethoscope", title:"Veterinarios", text:"Contenido clínico-técnico sobre fertilidad, salud podal y manejo reproductivo asociado a la genética ABS."},
+  ];
+  const funnel = ["Contenido educativo / científico","Autoridad técnica percibida","Dominio de categoría"];
+  return `
+  <div class="max-w-6xl mx-auto w-full">
+    <p class="kicker text-[#C8102E] mb-2">PAUTA HIPER-SEGMENTADA</p>
+    <h2 class="font-display font-semibold text-3xl md:text-4xl mb-3">Pauta como Macro-Autoridad Técnica</h2>
+    <p class="text-[#94A3B8] max-w-2xl mb-10">Modelo de pauta orientado a tomadores de decisión reales de la cadena ganadera, posicionando contenido educativo y científico para dominar la categoría.</p>
+
+    <div class="grid md:grid-cols-3 gap-5 mb-12">
+      ${audiences.map(a=>`
+      <div class="glass-card p-6">
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style="background:rgba(200,16,46,.14);">
+          <i data-lucide="${a.icon}" class="w-5 h-5 text-[#C8102E]"></i>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">${a.title}</h3>
+        <p class="text-sm text-[#CBD5E1] leading-relaxed">${a.text}</p>
+      </div>`).join("")}
+    </div>
+
+    <div class="glass-card p-6">
+      <p class="text-xs tracking-widest text-[#94A3B8] mb-6">MODELO DE ESCALAMIENTO DE AUTORIDAD</p>
+      <div class="flex flex-col md:flex-row items-stretch gap-3">
+        ${funnel.map((f,i)=>`
+          <div class="flex-1 px-5 py-5 rounded-xl text-center border border-[#1E3A8A]/60 funnel-box">
+            <span class="font-display text-xs text-[#00D2FF] block mb-2">0${i+1}</span>
+            <span class="font-medium text-sm">${f}</span>
+          </div>
+          ${i<funnel.length-1 ? '<div class="hidden md:flex items-center justify-center"><i data-lucide="chevron-right" class="w-6 h-6 text-[#475569]"></i></div>' : ''}
+        `).join("")}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderHouse(){
+  const roofLabel = "POSICIONAMIENTO Nº1 EN GENÉTICA BOVINA MUNDIAL";
+  const cols = PILLARS.map(p=>{
+    const ac = accentVars(p.accent);
+    return `
+    <div class="pillar-house flex-1 min-w-[90px] flex flex-col items-center gap-2" title="${p.subtitle}">
+      <div class="w-full rounded-t-md flex items-start justify-center pt-3" style="height:150px;background:linear-gradient(180deg, ${ac.c}33, ${ac.c}0d); border:1px solid ${ac.c}55; border-bottom:none;">
+        <i data-lucide="${p.icon}" class="w-6 h-6" style="color:${ac.c}"></i>
+      </div>
+      <span class="text-[11px] text-center leading-tight text-[#CBD5E1] font-medium">${p.title}</span>
+    </div>`;
+  }).join("");
+
+  return `
+  <div class="max-w-5xl mx-auto w-full flex flex-col items-center">
+    <p class="kicker text-[#00D2FF] mb-2">ARQUITECTURA CONSOLIDADA</p>
+    <h2 class="font-display font-semibold text-3xl md:text-4xl mb-8 text-center">La Casita Estratégica</h2>
+
+    <div class="w-full">
+      <!-- Techo -->
+      <div class="relative mx-auto mb-1" style="width:100%;max-width:720px;">
+        <div class="h-16 md:h-20 w-full flex items-center justify-center text-center px-6 font-display font-semibold text-xs md:text-sm tracking-wide"
+             style="background:linear-gradient(135deg,#C8102E,#7a0a1c);clip-path:polygon(50% 0, 100% 100%, 0 100%);">
+          <span class="mt-4 md:mt-6">${roofLabel}</span>
+        </div>
+      </div>
+
+      <!-- Pilares -->
+      <div class="flex gap-2 md:gap-3 w-full overflow-x-auto pb-1">${cols}</div>
+
+      <!-- Cimientos -->
+      <div class="w-full rounded-b-lg mt-1 px-6 py-5 text-center" style="background:linear-gradient(180deg,#0F2342,#060D1A);border:1px solid #1E3A8A88;">
+        <p class="font-display text-sm tracking-wide text-[#00D2FF] mb-1">CIMIENTOS</p>
+        <p class="text-sm text-[#CBD5E1]">Biotecnología ABS + IA Operativa <span class="text-[#475569]">(RAG · Automatización · Datos)</span></p>
+      </div>
+    </div>
+
+    <p class="text-xs text-[#475569] mt-6">Pasa el cursor sobre cada pilar para ver su enfoque estratégico.</p>
+  </div>`;
+}
+
+/* =========================================================
+   SLIDE ASSEMBLY
+========================================================= */
+const SLIDES = [
+  renderCover(),
+  ...PILLARS.map((p,i)=>renderPillarSlide(p,i)),
+  renderAI(),
+  renderPauta(),
+  renderHouse(),
+];
+
+const stage = document.getElementById("stage");
+stage.innerHTML = SLIDES.map((html,i)=>`<section class="slide" id="slide-${i+1}">${html}</section>`).join("");
+
+const dotbar = document.getElementById("dotbar");
+dotbar.innerHTML = SLIDES.map((_,i)=>`<span class="dot" data-goto="${i+1}"></span>`).join("");
+
+lucide.createIcons();
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+const TOTAL = SLIDES.length;
+let current = 1;
+const slideEls = () => document.querySelectorAll(".slide");
+const dotEls = () => document.querySelectorAll(".dot");
+const btnPrev = document.getElementById("btn-prev");
+const btnNext = document.getElementById("btn-next");
+const counter = document.getElementById("slide-counter");
+const progressFill = document.getElementById("progress-fill");
+
+function showSlide(n){
+  n = Math.max(1, Math.min(TOTAL, n));
+  slideEls().forEach(el=>{
+    const idx = parseInt(el.id.split("-")[1],10);
+    el.classList.toggle("active", idx===n);
+    el.classList.toggle("prev", idx<n);
+  });
+  dotEls().forEach((d,i)=> d.classList.toggle("active", i+1===n));
+  counter.innerHTML = `SLIDE ${String(n).padStart(2,"0")} <span class="text-white">DE ${TOTAL}</span>`;
+  progressFill.style.width = (n/TOTAL*100)+"%";
+  btnPrev.disabled = n===1;
+  btnNext.disabled = n===TOTAL;
+  current = n;
+}
+
+function next(){ showSlide(current+1); }
+function prev(){ showSlide(current-1); }
+
+btnNext.addEventListener("click", next);
+btnPrev.addEventListener("click", prev);
+
+document.addEventListener("keydown", (e)=>{
+  if(e.key==="ArrowRight" || e.key==="PageDown"){ next(); }
+  else if(e.key==="ArrowLeft" || e.key==="PageUp"){ prev(); }
+  else if(e.key==="Home"){ showSlide(1); }
+  else if(e.key==="End"){ showSlide(TOTAL); }
+});
+
+dotbar.addEventListener("click",(e)=>{
+  const dot = e.target.closest(".dot");
+  if(dot) showSlide(parseInt(dot.dataset.goto,10));
+});
+
+/* Accordion toggle (event delegation, works for dynamically injected slides) */
+document.addEventListener("click",(e)=>{
+  const header = e.target.closest(".acc-header");
+  if(!header) return;
+  const item = header.closest(".acc-item");
+  const body = item.querySelector(".acc-body");
+  const isOpen = item.classList.contains("open");
+  if(isOpen){
+    body.style.maxHeight = null;
+    item.classList.remove("open");
+  } else {
+    item.classList.add("open");
+    body.style.maxHeight = body.scrollHeight + "px";
+  }
+});
+
+/* Basic swipe support (touch devices) */
+let touchX = null;
+document.addEventListener("touchstart", e=>{ touchX = e.touches[0].clientX; }, {passive:true});
+document.addEventListener("touchend", e=>{
+  if(touchX===null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if(Math.abs(dx) > 60){ dx < 0 ? next() : prev(); }
+  touchX = null;
+}, {passive:true});
+
+showSlide(1);
+</script>
+</body>
+</html>
