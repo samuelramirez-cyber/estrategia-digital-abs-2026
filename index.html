@@ -130,6 +130,13 @@
   .acr::after{content:"";}
   .acr:hover::after{content:" (" attr(data-tip) ")";color:var(--abs-cyan);font-weight:400;font-style:italic;}
 
+  .quote-block{
+    border-left:3px solid var(--abs-red);
+    padding:4px 0 4px 20px;
+    font-style:italic;font-size:16px;line-height:1.6;
+    color:#E2E8F0;
+  }
+
   .pillar-house{transition:transform .25s ease, filter .25s ease;cursor:pointer;}
   .pillar-house:hover{transform:translateY(-6px);filter:brightness(1.15);}
   .pillar-house{min-width:90px;}
@@ -157,15 +164,15 @@
   .flex-1{flex:1 1 0%}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}
   .items-center{align-items:center}.items-start{align-items:flex-start}.items-stretch{align-items:stretch}
   .justify-between{justify-content:space-between}.justify-center{justify-content:center}
-  .gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-8{gap:2rem}
-  .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .gap-1{gap:.25rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-8{gap:2rem}
+  .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
   .space-y-2>*+*{margin-top:.5rem}
   .relative{position:relative}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}
   .w-full{width:100%}.h-full{height:100%}.min-w-0{min-width:0}.mx-auto{margin-left:auto;margin-right:auto}
   .shrink-0{flex-shrink:0}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .whitespace-nowrap{white-space:nowrap}.text-center{text-align:center}
   .w-4{width:1rem}.h-4{height:1rem}.w-5{width:1.25rem}.h-5{height:1.25rem}.w-6{width:1.5rem}.h-6{height:1.5rem}
-  .w-7{width:1.75rem}.h-7{height:1.75rem}.w-9{width:2.25rem}.h-9{height:2.25rem}.w-11{width:2.75rem}.h-11{height:2.75rem}
+  .w-7{width:1.75rem}.h-7{height:1.75rem}.w-9{width:2.25rem}.h-9{height:2.25rem}.w-10{width:2.5rem}.h-10{height:2.5rem}.w-11{width:2.75rem}.h-11{height:2.75rem}
   .w-14{width:3.5rem}.h-14{height:3.5rem}.h-16{height:4rem}.w-20{width:5rem}.h-20{height:5rem}
   .max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.max-w-5xl{max-width:64rem}.max-w-6xl{max-width:72rem}
   .text-xs{font-size:.75rem;line-height:1rem}.text-sm{font-size:.875rem;line-height:1.25rem}
@@ -177,7 +184,7 @@
   .leading-tight{line-height:1.25}.leading-relaxed{line-height:1.625}
   .tracking-wide{letter-spacing:.025em}.tracking-wider{letter-spacing:.05em}.tracking-widest{letter-spacing:.1em}
   .tracking-\[\.2em\]{letter-spacing:.2em}.tracking-\[\.25em\]{letter-spacing:.25em}
-  .rounded{border-radius:.25rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}
+  .rounded{border-radius:.25rem}.rounded-md{border-radius:.375rem}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}
   .rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}
   .rounded-t-md{border-top-left-radius:.375rem;border-top-right-radius:.375rem}
   .rounded-b-lg{border-bottom-left-radius:.5rem;border-bottom-right-radius:.5rem}
@@ -187,14 +194,14 @@
   .mb-5{margin-bottom:1.25rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mb-10{margin-bottom:2.5rem}.mb-12{margin-bottom:3rem}
   .mt-0\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}
   .pt-1{padding-top:.25rem}.pt-3{padding-top:.75rem}.pb-1{padding-bottom:.25rem}.pb-5{padding-bottom:1.25rem}
-  .px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}
+  .px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}
   .px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}
   .py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}
   .py-4{padding-top:1rem;padding-bottom:1rem}.py-5{padding-top:1.25rem;padding-bottom:1.25rem}
-  .p-6{padding:1.5rem}
+  .p-5{padding:1.25rem}.p-6{padding:1.5rem}
   @media (min-width:768px){
     .md\:flex{display:flex}.md\:flex-row{flex-direction:row}
-    .md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.md\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
     .md\:gap-3{gap:.75rem}.md\:h-20{height:5rem}.md\:mt-6{margin-top:1.5rem}
     .md\:text-4xl{font-size:2.25rem;line-height:2.5rem}.md\:text-6xl{font-size:3.75rem;line-height:1}
     .md\:text-base{font-size:1rem;line-height:1.5rem}.md\:text-lg{font-size:1.125rem;line-height:1.75rem}
@@ -512,6 +519,96 @@ function renderCover(){
   </div>`;
 }
 
+function renderContext(){
+  const stats = [
+    {icon:"trending-up", value:"29,5M", label:"cabezas de ganado — hato bovino Nº13 del mundo, 5º de América"},
+    {icon:"users", value:"1.099.273", label:"empleos directos generados por el sector, en 736.972 predios"},
+    {icon:"pie-chart", value:"46%", label:"del PIB pecuario — 20% del PIB agropecuario, 1,4% del PIB nacional"},
+    {icon:"map-pin", value:"48%", label:"del empleo del sector está en doble propósito — el sistema que más empleo genera en Colombia"},
+  ];
+  return `
+  <div class="max-w-6xl mx-auto w-full">
+    <p class="kicker text-[#00D2FF] mb-2">POR QUÉ AHORA</p>
+    <h2 class="font-display font-semibold text-3xl md:text-4xl mb-3">Contexto y Oportunidad</h2>
+    <p class="text-[#94A3B8] max-w-3xl mb-8">Colombia es uno de los mercados de ganadería bovina más grandes y heterogéneos del mundo — y ninguna marca de genética ha ocupado todavía el rol de autoridad técnica que demuestra, con evidencia y en el tiempo, lo que el progreso genético realmente cambia en un hato.</p>
+
+    <div class="grid md:grid-cols-4 gap-4 mb-8">
+      ${stats.map(s=>`
+      <div class="glass-card p-5">
+        <i data-lucide="${s.icon}" class="w-5 h-5 text-[#00D2FF] mb-3"></i>
+        <div class="font-display font-bold text-2xl mb-1">${s.value}</div>
+        <p class="text-xs text-[#94A3B8] leading-relaxed">${s.label}</p>
+      </div>`).join("")}
+    </div>
+
+    <div class="quote-block mb-8">
+      «La decisión genética más cara que toma un ganadero nunca aparece en una factura. Se paga en cámara lenta, generación tras generación — y cuando se nota, ya es tarde para corregirla barato.»
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="glass-card p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <i data-lucide="handshake" class="w-5 h-5" style="color:#00D2FF"></i>
+          <h3 class="font-semibold text-lg">El socio en Colombia: Grupo Bios</h3>
+        </div>
+        <p class="text-sm text-[#CBD5E1] leading-relaxed">Desde 2023, Grupo Bios —conglomerado agroindustrial colombiano con más de 70 años de trayectoria y cobertura territorial nacional— es el representante comercial exclusivo de ABS en el país. Es el activo de cercanía real con el productor que debe tener protagonismo en esta estrategia.</p>
+      </div>
+      <div class="glass-card p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <i data-lucide="target" class="w-5 h-5" style="color:#C8102E"></i>
+          <h3 class="font-semibold text-lg">El espacio disponible</h3>
+        </div>
+        <p class="text-sm text-[#CBD5E1] leading-relaxed">La conversación digital de la categoría hoy es educativa-institucional y de catálogo. Existe una tensión real y documentada en el sector entre genética especializada y adaptación al trópico — pero ninguna marca la ha convertido todavía en una conversación digital accesible para el productor de a pie.</p>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderStrategy(){
+  const chain = PILLARS.map(p=>{
+    const ac = accentVars(p.accent);
+    return `<div class="flex flex-col items-center gap-1 px-2">
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:${ac.soft};border:1px solid ${ac.c}55;">
+        <i data-lucide="${p.icon}" class="w-4 h-4" style="color:${ac.c}"></i>
+      </div>
+      <span class="text-[9px] text-center text-[#94A3B8] leading-tight max-w-[70px]">${p.title}</span>
+    </div>`;
+  }).join(`<i data-lucide="chevron-right" class="w-4 h-4 text-[#475569] shrink-0"></i>`);
+
+  return `
+  <div class="max-w-6xl mx-auto w-full">
+    <p class="kicker text-[#C8102E] mb-2">CÓMO LO VAMOS A HACER</p>
+    <h2 class="font-display font-semibold text-3xl md:text-4xl mb-8">Estrategia General</h2>
+
+    <div class="glass-card p-6 mb-5">
+      <p class="text-xs tracking-widest text-[#94A3B8] mb-3">POSICIONAMIENTO</p>
+      <p class="text-base md:text-lg leading-relaxed">Para los ganaderos colombianos que necesitan que cada decisión genética valga la pena durante años —no solo en la próxima temporada— ABS es la compañía que convierte el <span class="text-[#00D2FF] font-semibold">progreso genético</span> en resultados visibles y medibles, en cualquier sistema productivo, respaldada por evidencia global de campo y la cercanía comercial de Grupo Bios en Colombia.</p>
+    </div>
+
+    <div class="glass-card p-6 mb-5">
+      <p class="text-xs tracking-widest text-[#94A3B8] mb-4">TERRITORIO DE MARCA</p>
+      <div class="flex flex-wrap items-center justify-center gap-1">
+        <div class="px-3 py-2 rounded-lg font-display font-bold text-sm" style="background:rgba(200,16,46,.14);color:#C8102E;">ABS</div>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-[#475569] shrink-0"></i>
+        <div class="px-3 py-2 rounded-lg font-display font-semibold text-sm text-center">PROGRESO<br>GENÉTICO</div>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-[#475569] shrink-0"></i>
+        ${chain}
+        <i data-lucide="chevron-right" class="w-4 h-4 text-[#475569] shrink-0"></i>
+        <div class="px-3 py-2 rounded-lg font-display font-bold text-sm" style="background:rgba(0,210,255,.14);color:#00D2FF;">RENTABILIDAD</div>
+      </div>
+    </div>
+
+    <div class="glass-card p-6">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="tag-pill" style="background:rgba(200,16,46,.14);color:#C8102E;">CONCEPTO CENTRAL</span>
+        <h3 class="font-display font-bold text-2xl grad-text">"Se nota"</h3>
+      </div>
+      <p class="text-sm text-[#CBD5E1] leading-relaxed mb-3">El progreso genético no se anuncia, se nota. Mientras la competencia habla de genética, ABS la muestra ocurriendo — una promesa verificable en el hato, no un discurso de marca.</p>
+      <p class="text-xs text-[#94A3B8] leading-relaxed">En Holstein se nota en la producción · en Girolando se nota en que la vaca aguanta el verano · en Sexcel se nota en la genética de la cría · en Nelore se nota en el kilo de canal · en el cruzamiento industrial se nota en el ternero · en Río Grande se nota en la velocidad de multiplicación genética.</p>
+    </div>
+  </div>`;
+}
+
 function renderAI(){
   const items = [
     {icon:"database", title:"Agentes <abbr class='acr' data-tip='Retrieval-Augmented Generation'>RAG</abbr>", text:"Ingesta y consulta de papers científicos y fichas técnicas ABS mediante agentes <abbr class='acr' data-tip='Retrieval-Augmented Generation'>RAG</abbr>, garantizando que cada pieza de contenido cite la fuente técnica correcta."},
@@ -634,6 +731,8 @@ function renderHouse(){
 ========================================================= */
 const SLIDES = [
   renderCover(),
+  renderContext(),
+  renderStrategy(),
   ...PILLARS.map((p,i)=>renderPillarSlide(p,i)),
   renderAI(),
   renderPauta(),
