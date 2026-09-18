@@ -399,20 +399,20 @@ function renderCover(){
 ========================================================= */
 function renderContext(){
   const stats = [
-    {value:"29,5M", label:"cabezas de ganado"},
-    {value:"Nº13", label:"hato bovino más grande del mundo"},
-    {value:"Nº5", label:"de América · Nº3 de Sudamérica"},
+    {value:"29,5M", label:"cabezas de ganado — hato bovino Nº13 del mundo, Nº5 de América, Nº3 de Sudamérica"},
     {value:"1,1M", label:"empleos directos generados por el sector"},
-    {value:"46%", label:"del PIB pecuario nacional"},
-    {value:"20%", label:"del PIB agropecuario"},
-    {value:"1,4%", label:"del PIB nacional total"},
-    {value:"48%", label:"del empleo del sector está en doble propósito"},
+    {value:"46%", label:"del PIB pecuario — 20% del PIB agropecuario, 1,4% del PIB nacional"},
+    {value:"48%", label:"del empleo del sector está en doble propósito — el sistema que más empleo genera en Colombia"},
   ];
   return `
   <div class="max-w-6xl mx-auto w-full px-6 md:px-10 pt-10 md:pt-14 pb-24">
     <p class="eyebrow">CONTEXTO DE MERCADO</p>
     <h2 class="font-extrabold text-3xl md:text-4xl mb-3">El reto ganadero colombiano</h2>
-    <p class="max-w-3xl mb-10" style="color:#94A3B8;">Colombia es uno de los mercados de ganadería bovina más grandes del mundo — y una categoría de decisión técnica que, hoy, se comunica como un insumo más. <span style="color:#CBD5E1">Fuente: Fedegán-FNG, Anuario Estadístico de la Ganadería Colombiana 2024.</span></p>
+    <p class="max-w-3xl mb-8" style="color:#94A3B8;">Colombia es uno de los mercados de ganadería bovina más grandes del mundo — y una categoría de decisión técnica que, hoy, se comunica como un insumo más. <span style="color:#CBD5E1">Fuente: Fedegán-FNG, Anuario Estadístico de la Ganadería Colombiana 2024.</span></p>
+
+    <div class="quote-block mb-8">
+      «La decisión genética más cara que toma un ganadero nunca aparece en una factura. Se paga en cámara lenta, generación tras generación.»
+    </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
       ${stats.map(s=>`
@@ -420,10 +420,6 @@ function renderContext(){
         <div class="stat-num text-accent">${s.value}</div>
         <p class="text-xs mt-2" style="color:#94A3B8;line-height:1.4;">${s.label}</p>
       </div>`).join("")}
-    </div>
-
-    <div class="quote-block mb-10">
-      «La decisión genética más cara que toma un ganadero nunca aparece en una factura. Se paga en cámara lenta, generación tras generación.»
     </div>
 
     <div class="card p-6 md:p-8">
