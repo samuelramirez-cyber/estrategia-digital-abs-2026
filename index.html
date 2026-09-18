@@ -98,22 +98,22 @@
     font-size:18px;line-height:1.55;color:#F1F5F9;font-weight:500;
   }
 
-  /* ---------- Tabs (pillar slides) ---------- */
-  .tab-btn{
-    display:flex;align-items:center;gap:10px;width:100%;text-align:left;
-    padding:12px 14px;border-radius:8px;border:1px solid transparent;
-    background:transparent;color:#94A3B8;cursor:pointer;transition:all .15s ease;
-  }
-  .tab-btn:hover{background:rgba(255,255,255,.04);color:#fff;}
-  .tab-btn.active{background:var(--navy-900);border-color:var(--line);color:#fff;}
-  .tab-btn.active .tab-num{background:var(--abs-red);color:#fff;}
+  /* ---------- Pillar slides: numbering + accordion ---------- */
   .tab-num{
     width:22px;height:22px;border-radius:5px;background:rgba(255,255,255,.08);color:#94A3B8;
     display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;
   }
-  .tab-panel{display:none;}
-  .tab-panel.active{display:block;animation:fadein .25s ease;}
-  @keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+  .acc-item{border:1px solid var(--line);border-radius:8px;margin-bottom:10px;background:var(--navy-900);overflow:hidden;}
+  .acc-header{
+    display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+    padding:12px 14px;border:none;background:transparent;color:#fff;cursor:pointer;
+    font-family:inherit;
+  }
+  .acc-header:hover{background:rgba(255,255,255,.03);}
+  .acc-chevron{transition:transform .25s ease;}
+  .acc-item.open .acc-chevron{transform:rotate(180deg);}
+  .acc-item.open .acc-header{border-bottom:1px solid var(--line);}
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 14px;}
 
   /* ---------- Photo hero blocks ---------- */
   .photo-frame{
@@ -267,15 +267,19 @@ const PILLARS = [
   {
     tag:"PILAR 01 — LECHERÍA ESPECIALIZADA", title:"Holstein ABS", subtitle:"La vaca balanceada frente al mito de la «vaca linda»",
     photo:"holstein", accent:"blue",
-    tabs:[
+    always:[
       {label:"Acercamiento Estratégico", icon:"compass",
         body:["Posicionar a Holstein ABS como la genética que traduce mérito real —fertilidad, producción, longevidad, salud de ubre y pezuñas— en decisiones de rentabilidad de finca, desplazando la selección por apariencia de exhibición como criterio dominante."]},
       {label:"Segmentación de Audiencia", icon:"users",
         body:["Dueños de finca: retorno de la inversión genética en el largo plazo.","Administradores: flujo de caja del hato y reemplazo de vientres.","Zootecnistas: definen criterios de selección y cruces.","Veterinarios: validan fertilidad, salud podal y longevidad."]},
       {label:"Fricciones & Barreras", icon:"alert-triangle",
         body:["Selección histórica por apariencia de exhibición («vaca linda») en subastas y redes.","Desconfianza hacia índices genéticos percibidos como «de laboratorio», lejanos del criterio de campo.","Saturación de contenido educativo genérico sobre genética lechera."]},
+    ],
+    accordion:[
       {label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
         body:["Índices compuestos (mérito neto, TPI) ponderan producción junto con días abiertos, intervalo entre partos y vida productiva.","Conformación de ubre y ángulo podal predicen longevidad y reducen descartes prematuros.","La selección exclusiva por tipo de exhibición muestra correlación débil con la rentabilidad real por lactancia."]},
+      {label:"Oportunidad Digital", icon:"target",
+        body:["Gran parte del mercado lechero colombiano aún selecciona por apariencia en subastas y redes, dejando una brecha de criterio técnico sin ocupar.","Oportunidad de posicionar a ABS como la autoridad que traduce PTA/DEP en decisiones de rentabilidad de finca.","Diferenciación frente a competidores que aún comunican solo con lenguaje estético."]},
       {label:"Formatos & Medios Adaptados", icon:"layout-grid",
         body:["Fichas PDF de toro de una página, optimizadas para WhatsApp, con datos clave y QR a ficha completa.","Infografías comparativas «vaca balanceada vs. vaca linda» con métricas de fertilidad y salud podal.","Artículos técnicos en LinkedIn/Web sobre lectura de PTA y mérito neto."]},
       {label:"Estrategia Orgánica & Pauta", icon:"megaphone",
@@ -285,15 +289,19 @@ const PILLARS = [
   {
     tag:"PILAR 02 — BIOTECNOLOGÍA REPRODUCTIVA", title:"Semen Sexado Sexcel®", subtitle:"Precisión de microfluídica y láser, sin fricción de manejo en campo",
     photo:"sexcel", accent:"blue",
-    tabs:[
+    always:[
       {label:"Acercamiento Estratégico", icon:"compass",
         body:["Posicionar Sexcel® como la plataforma de precisión reproductiva que permite decidir el sexo de la cría con 90% de efectividad, derribando el mito de que requiere infraestructura de laboratorio en finca."]},
       {label:"Segmentación de Audiencia", icon:"users",
         body:["Dueños de finca: invierten en tecnología reproductiva de mayor valor por dosis.","Administradores: planifican el reemplazo de vientres y la composición futura del hato.","Zootecnistas: diseñan el programa reproductivo y de sincronización.","Técnicos IA: aplican la dosis en campo bajo protocolo IATF."]},
       {label:"Fricciones & Barreras", icon:"alert-triangle",
         body:["Mito de manejo: se asume que requiere laboratorio o infraestructura especial en finca.","Percepción de mayor riesgo o costo frente al semen convencional sin evidencia clara de retorno.","Baja claridad técnica sobre el proceso de clasificación espermática."]},
+    ],
+    accordion:[
       {label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
         body:["Tecnología de microfluídica y clasificación asistida por láser que separa espermatozoides X/Y con 90% de efectividad.","El proceso ocurre en el laboratorio de procesamiento seminal; el productor recibe la dosis lista para inseminar.","Compatible con protocolos estándar de sincronización e IATF ya usados en finca, con pistola de inseminación convencional."]},
+      {label:"Oportunidad Digital", icon:"target",
+        body:["Categoría con alta intención de búsqueda pero baja claridad técnica — terreno fértil para contenido de autoridad.","Oportunidad de derribar el mito de manejo educando sobre la curva de aprendizaje real: descongelado, tiempos, manipulación de la pajilla.","Espacio para posicionar a ABS como quien resuelve la duda antes de que el productor decida no probar la tecnología."]},
       {label:"Formatos & Medios Adaptados", icon:"layout-grid",
         body:["Video corto de protocolo de manejo en campo: descongele, tiempo de inserción, control de calidad.","Infografía de tasa de concepción Sexcel® vs. semen convencional por categoría de hembra.","Ficha técnica PDF para técnicos inseminadores, formato WhatsApp."]},
       {label:"Estrategia Orgánica & Pauta", icon:"megaphone",
@@ -303,15 +311,19 @@ const PILLARS = [
   {
     tag:"PILAR 03 — GENÉTICA DE CARNE", title:"Nelore ABS", subtitle:"Ceba acelerada y eficiencia en pradera",
     photo:"nelore", accent:"red",
-    tabs:[
+    always:[
       {label:"Acercamiento Estratégico", icon:"compass",
         body:["Posicionar a Nelore ABS como la decisión que acelera el ciclo cría-levante-ceba y reduce el costo de mantenimiento diario en pradera, traduciendo genética en más kilos vendidos por hectárea."]},
       {label:"Segmentación de Audiencia", icon:"users",
         body:["Dueños de finca de cría-ceba: ciclos más cortos y mayor rotación de capital.","Administradores: controlan costo de mantenimiento diario y carga animal por hectárea.","Zootecnistas: seleccionan reproductores por DEP de crecimiento y eficiencia.","Veterinarios: acompañan el manejo sanitario del ciclo completo."]},
       {label:"Fricciones & Barreras", icon:"alert-triangle",
         body:["Decisión de compra basada en apariencia racial cebuina más que en datos de desempeño.","Percepción de que la genética «de catálogo» no cambia sustancialmente la eficiencia de pradera.","Falta de comparación clara entre líneas genéticas en costo por kilo producido."]},
+    ],
+    accordion:[
       {label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
         body:["DEP de peso al destete, peso a los 18 meses y área de ojo de lomo predicen ciclos más cortos.","Animales de menor requerimiento de mantenimiento liberan carga animal y pradera para escalar el hato.","La genética de precocidad reduce la edad al primer servicio y acelera el retorno de capital."]},
+      {label:"Oportunidad Digital", icon:"target",
+        body:["El mercado de cría tradicional aún decide por apariencia racial cebuina, subestimando el impacto de la genética en el ciclo completo.","Oportunidad de posicionar a Nelore ABS como decisión de rentabilidad por ciclo productivo, no solo de fenotipo.","Espacio para educar sobre eficiencia de conversión frente a competidores enfocados solo en tamaño de marco."]},
       {label:"Formatos & Medios Adaptados", icon:"layout-grid",
         body:["Infografías del ciclo cría-levante-ceba con métricas de eficiencia y costo por kilo producido.","Artículos técnicos LinkedIn sobre lectura de DEP aplicada a la decisión de compra de reproductores.","Comparativos visuales de velocidad a peso final por línea genética."]},
       {label:"Estrategia Orgánica & Pauta", icon:"megaphone",
@@ -321,15 +333,19 @@ const PILLARS = [
   {
     tag:"PILAR 04 — GENÉTICA COMPUESTA", title:"Cruzamiento Industrial", subtitle:"Súper Dosis ABS y BIF — Proyecto Lazo Millonario",
     photo:"cruzamiento", accent:"red",
-    tabs:[
+    always:[
       {label:"Acercamiento Estratégico", icon:"compass",
         body:["Posicionar el cruzamiento industrial —Súper Dosis ABS y BIF (Beef In Focus)— como la estrategia de mayor generación de valor genético, liderando su despliegue en los Llanos Orientales bajo el proyecto Lazo Millonario y distanciando el mensaje de ABS frente a NuEra."]},
       {label:"Segmentación de Audiencia", icon:"users",
         body:["Dueños de fincas de doble negocio leche-carne.","Administradores que evalúan el retorno del cruce frente a la raza pura.","Zootecnistas que diseñan el programa de cruzamiento.","Veterinarios que validan fertilidad y resultado del ternero cruzado."]},
       {label:"Fricciones & Barreras", icon:"alert-triangle",
         body:["Confusión de mercado entre Súper Dosis y BIF, como si fueran la misma solución.","Competencia con actores ya posicionados en el mensaje de cruce, como NuEra.","Desconocimiento de la heterosis como argumento de rentabilidad, más allá del fenotipo del ternero."]},
+    ],
+    accordion:[
       {label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
         body:["Súper Dosis ABS combina cebuino blanco con líneas continentales de carne (negro carne) buscando heterosis máxima.","<abbr class='acr' data-tip='Beef In Focus'>BIF</abbr> cruza líneas lecheras con carne, capitalizando vientres de descarte lechero en terneros de mayor valor comercial.","El proyecto Lazo Millonario concentra el despliegue inicial en los Llanos Orientales, cuenca de mayor potencial de escalamiento."]},
+      {label:"Oportunidad Digital", icon:"target",
+        body:["El cruzamiento industrial compite por atención con actores ya posicionados en el mensaje de cruce, como NuEra.","Oportunidad de distanciar el mensaje de ABS con evidencia propia de heterosis y datos de campo, no solo narrativa de marca.","Educar sobre BIF como categoría poco comunicada en Colombia abre espacio de autoridad temprana."]},
       {label:"Formatos & Medios Adaptados", icon:"layout-grid",
         body:["Casos de finca documentados de cruces Súper Dosis y BIF con resultados de ceba.","Infografías de heterosis explicando la ganancia genética del cruce frente a la raza pura.","Calculadora simple de rentabilidad por ternero cruzado, en formato compartible por WhatsApp."]},
       {label:"Estrategia Orgánica & Pauta", icon:"megaphone",
@@ -339,15 +355,19 @@ const PILLARS = [
   {
     tag:"PILAR 05 — DOBLE PROPÓSITO", title:"Girolando ABS", subtitle:"Estrés térmico y lactancia en el trópico bajo y medio",
     photo:"girolando", accent:"blue",
-    tabs:[
+    always:[
       {label:"Acercamiento Estratégico", icon:"compass",
         body:["Posicionar a Girolando ABS como la decisión de ingeniería genética que sostiene producción de leche y carne bajo estrés térmico real, liderando la conversación técnica de adaptación tropical en el Eje Cafetero y el Magdalena Medio."]},
       {label:"Segmentación de Audiencia", icon:"users",
         body:["Dueños de fincas de doble propósito en trópico bajo y medio.","Administradores que gestionan el flujo de caja combinado de leche y carne.","Zootecnistas que seleccionan por termotolerancia y producción.","Veterinarios que atienden el manejo sanitario en calor y humedad."]},
       {label:"Fricciones & Barreras", icon:"alert-triangle",
         body:["El doble propósito se subvalora frente a la lechería especializada, aun siendo más eficiente en trópico real.","Percepción de que la genética especializada no es viable en condiciones de calor.","Menor cobertura de contenido técnico frente a categorías de lechería o carne."]},
+    ],
+    accordion:[
       {label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
         body:["La termotolerancia genética —pelo corto, pigmentación, disipación de calor— sostiene producción y fertilidad en climas cálidos.","El doble propósito capitaliza litros de leche y kilos de carne del mismo hato, mejorando el flujo de caja.","Datos de comportamiento productivo bajo estrés térmico son el argumento técnico central en el Eje Cafetero y el Magdalena Medio."]},
+      {label:"Oportunidad Digital", icon:"target",
+        body:["El doble propósito suele subvalorarse frente a la lechería especializada, aun siendo la opción más eficiente para el trópico real de Colombia.","Oportunidad de educar sobre eficiencia productiva bajo condiciones reales de calor y humedad, no de trópico alto.","Girolando ABS puede liderar la conversación técnica de adaptación climática en genética bovina."]},
       {label:"Formatos & Medios Adaptados", icon:"layout-grid",
         body:["Infografías de índice de tolerancia al calor por línea genética Girolando.","Artículos técnicos sobre manejo productivo en trópico bajo y medio.","Fichas PDF resumidas de toros Girolando, optimizadas para WhatsApp."]},
       {label:"Estrategia Orgánica & Pauta", icon:"megaphone",
@@ -357,15 +377,19 @@ const PILLARS = [
   {
     tag:"PILAR 06 — INFRAESTRUCTURA GENÉTICA", title:"ABS | Río Grande", subtitle:"El primer laboratorio de embriones especializado en Colombia",
     photo:"riogrande", accent:"red",
-    tabs:[
+    always:[
       {label:"Acercamiento Estratégico", icon:"compass",
         body:["Posicionar la alianza ABS | Río Grande como el habilitador de infraestructura que multiplica genética de alto valor directamente en Colombia, a través del primer laboratorio de embriones especializado del país."]},
       {label:"Segmentación de Audiencia", icon:"users",
         body:["Grandes productores y grupos ganaderos corporativos.","Administradores de programas de multiplicación genética.","Zootecnistas que diseñan protocolos de producción de embriones.","Veterinarios especializados en biotecnología reproductiva."]},
       {label:"Fricciones & Barreras", icon:"alert-triangle",
         body:["El mercado desconoce que Colombia ya cuenta con capacidad local de este nivel técnico.","Percepción de que la producción de embriones es un proceso lejano, solo para grandes operaciones internacionales.","Baja cobertura mediática del proceso técnico fuera del círculo especializado."]},
+    ],
+    accordion:[
       {label:"Entendimiento Técnico & Ciencia", icon:"flask-conical",
         body:["Alianza biotecnológica que opera el primer laboratorio especializado de producción de embriones en Colombia.","Capacidad local de aspiración folicular y fertilización in vitro reduce la dependencia histórica de embriones importados.","Acelera la multiplicación de genética de alto valor —Holstein, Sexcel, Nelore— directamente en el mercado colombiano."]},
+      {label:"Oportunidad Digital", icon:"target",
+        body:["El mercado desconoce en gran medida que Colombia ya cuenta con capacidad local de producción de embriones de este nivel técnico.","Oportunidad de comunicar la reducción real de tiempos y costos frente a la importación de embriones.","Contenido dirigido a inversionistas y grandes hatos que evalúan programas de multiplicación genética."]},
       {label:"Formatos & Medios Adaptados", icon:"layout-grid",
         body:["Explicativos del flujo de producción de embriones en infografía paso a paso.","Artículos técnicos para prensa especializada y asociaciones de raza.","Piezas institucionales sobre la alianza y su rol en el ecosistema genético nacional."]},
       {label:"Estrategia Orgánica & Pauta", icon:"megaphone",
@@ -482,18 +506,36 @@ function renderPositioning(){
 ========================================================= */
 function renderPillarSlide(p){
   const ac = accentColor(p.accent);
-  const tabBtns = p.tabs.map((t,i)=>`
-    <button class="tab-btn ${i===0?'active':''}" data-tab="${i}">
-      <span class="tab-num">${i+1}</span>
-      <i data-lucide="${t.icon}" class="w-4 h-4 shrink-0" style="color:${ac}"></i>
-      <span class="text-sm font-semibold">${t.label}</span>
-    </button>`).join("");
-  const tabPanels = p.tabs.map((t,i)=>`
-    <div class="tab-panel ${i===0?'active':''}" data-panel="${i}">
-      <ul class="space-y-3">
-        ${t.body.map(line=>`<li class="flex gap-3 text-sm" style="color:#E2E8F0;line-height:1.6;"><i data-lucide="check" class="w-4 h-4 shrink-0 mt-0.5" style="color:${ac}"></i><span>${line}</span></li>`).join("")}
+
+  const alwaysBlocks = p.always.map((t,i)=>`
+    <div class="mb-5">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="tab-num" style="background:${ac};color:#fff;">${i+1}</span>
+        <i data-lucide="${t.icon}" class="w-4 h-4 shrink-0" style="color:${ac}"></i>
+        <span class="text-sm font-bold">${t.label}</span>
+      </div>
+      <ul class="space-y-2" style="padding-left:30px;">
+        ${t.body.map(line=>`<li class="flex gap-2 text-sm" style="color:#CBD5E1;line-height:1.55;"><i data-lucide="check" class="w-4 h-4 shrink-0 mt-0.5" style="color:${ac}"></i><span>${line}</span></li>`).join("")}
       </ul>
     </div>`).join("");
+
+  const accItems = p.accordion.map((t,i)=>{
+    const n = p.always.length + i + 1;
+    return `
+    <div class="acc-item">
+      <button class="acc-header" data-acc-toggle>
+        <span class="tab-num">${n}</span>
+        <i data-lucide="${t.icon}" class="w-4 h-4 shrink-0" style="color:${ac}"></i>
+        <span class="text-sm font-bold flex-1">${t.label}</span>
+        <i data-lucide="chevron-down" class="acc-chevron w-4 h-4 shrink-0" style="color:#64748B;"></i>
+      </button>
+      <div class="acc-body">
+        <ul class="space-y-2 pt-1" style="padding-left:30px;padding-bottom:14px;">
+          ${t.body.map(line=>`<li class="flex gap-2 text-sm" style="color:#CBD5E1;line-height:1.55;"><i data-lucide="check" class="w-4 h-4 shrink-0 mt-0.5" style="color:${ac}"></i><span>${line}</span></li>`).join("")}
+        </ul>
+      </div>
+    </div>`;
+  }).join("");
 
   return `
   <div class="w-full h-full flex flex-col md:flex-row">
@@ -506,13 +548,10 @@ function renderPillarSlide(p){
         <p class="text-sm" style="color:#CBD5E1;">${p.subtitle}</p>
       </div>
     </div>
-    <div class="flex-1 flex flex-col md:flex-row" style="min-height:0;">
-      <div class="flex md:flex-col gap-1 p-3 overflow-x-auto md:overflow-y-auto md:w-64 shrink-0" style="background:var(--navy-950);border-right:1px solid var(--line);">
-        ${tabBtns}
-      </div>
-      <div class="flex-1 p-6 md:p-8 overflow-y-auto">
-        ${tabPanels}
-      </div>
+    <div class="flex-1 p-6 md:p-8 overflow-y-auto">
+      ${alwaysBlocks}
+      <div class="rule mb-5"></div>
+      ${accItems}
     </div>
   </div>`;
 }
@@ -683,14 +722,20 @@ dotbar.addEventListener("click",(e)=>{
   if(dot) showSlide(parseInt(dot.dataset.goto,10));
 });
 
-/* Pillar tabs (event delegation) */
+/* Pillar accordions (event delegation) */
 document.addEventListener("click",(e)=>{
-  const btn = e.target.closest(".tab-btn");
-  if(!btn) return;
-  const group = btn.closest(".slide");
-  const idx = btn.dataset.tab;
-  group.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active", b===btn));
-  group.querySelectorAll(".tab-panel").forEach(p=>p.classList.toggle("active", p.dataset.panel===idx));
+  const header = e.target.closest("[data-acc-toggle]");
+  if(!header) return;
+  const item = header.closest(".acc-item");
+  const body = item.querySelector(".acc-body");
+  const isOpen = item.classList.contains("open");
+  if(isOpen){
+    body.style.maxHeight = null;
+    item.classList.remove("open");
+  } else {
+    item.classList.add("open");
+    body.style.maxHeight = body.scrollHeight + "px";
+  }
 });
 
 /* Casa Estratégica: toggle pillar summary on click */
